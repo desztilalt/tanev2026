@@ -6,27 +6,74 @@ egyenleg = 0
 hasznalati_dij = 1000
 adatfajl = "szamla.txt"
 jogosult = False
+tranzakciok=[]
 
 
 ############################
 # FUNKCIÓK
 ############################
+
+
+def adatbeolvasas(fajl):
+    try:
+        with open(fajl, "r", encoding="UTF-8") as f:
+            global tranzakciok
+            tranzakciok = f.readlines()
+    except IOError as e:
+        print(f"Fájl művelet hiba: {e}")
+        
+        
+def mentes(fajl):
+    try:
+        with open(fajl, "w", encoding="UTF-8") as f:
+            f.writelines(tranzakciok)
+    except IOError as e:
+        print(f"Fájl művelet hiba: {e}")
+        
+
 def egyenleg():
-    print(f"Az egyenleged: ")
+    szamla_egyenleg=0
+    
+    for sz in tranzakciok:
+        szamla_egyenleg += int(sz)
+        
+    print(f"Az egyenleged: {szamla_egyenleg} Ft")
+
 
 def utalas(osszeg):
     print("Utalás: ")
+    
+    osszeg += round(hasznalati_dij * 0.05)
+    
+    if osszeg>egyenleg():
+        print("Nem áll rendelkezésre elegendő fedezet!")
+    else:
+        tranzakciok.append(f"-{osszeg}")
+
+    egyenleg()
 
 def penzbetetel(osszeg):
     print("Betétel: ") 
+    tranzakciok.append(f"+{osszeg}")
 
-
+    egyenleg()
+    
+    
 # darab = 0 -> összes tranzakció
 # darab = !=0 -> utolsó tranzakció
 
 
 def tortenet(darab):
     print("Tranzakciók: ")
+    
+    if darab==0:
+        kezdet=0
+    else:
+        kezdet=len(tranzakciok)-darab
+    
+    for i in range(kezdet, len(tranzakciok)):
+        print(f"\t{tranzakciok[i].rstrip()}")
+
 
 ############################
 # FUNKCIÓK VÉGE
@@ -38,6 +85,8 @@ def tortenet(darab):
 
 
 hibas_belepesszam = 3
+
+
 pk = int(input("Add meg a PIN kódodat!: "))
 
 if pk == pin_kod:
@@ -56,6 +105,8 @@ while (not jogosult and hibas_belepesszam > 1):
 if not jogosult:
     print(f"Hibás pin kód!")
 
+adatbeolvasas(adatfajl)
+
 
 # FUNKCIÓVÁLASZTÓ MENÜ
 
@@ -70,32 +121,48 @@ menu=[
     "9. Kilépés"
 ]
 
+
 menupontok=[1, 2, 3, 4, 9]
 
-print(cim)
-for me in menu:
-    print(f"{me}")
-
-valasztas=int(input("Válassz tevékenységet: "))
-
-while valasztas not in menupontok:
-    print("Nincs ilyen menüpont!\n")
-
+while True:
     print(cim)
     for me in menu:
         print(f"{me}")
 
-if valasztas == 1:
-    egyenleg()
-elif valasztas == 2:
-    utalas(123)
-elif valasztas == 3:
-    penzbetetel(10000)
-elif valasztas == 4:
-    tortenet(0)
-elif valasztas == 9:
-    exit()
+    valasztas=int(input("Válassz tevékenységet: "))
+
+    while valasztas not in menupontok:
+        print("Nincs ilyen menüpont!\n")
+
+        print(cim)
+        for me in menu:
+            print(f"{me}")
+
+
+    #KÉPERNYŐ TÖRLÉSE
     
     
+    print(f"{'\n'*20}")
+    
+
+    if valasztas == 1:
+        egyenleg()
+        
+    elif valasztas == 2:
+        u=int(input("Kivétel vagy utalás összege: "))
+        utalas(u)
+
+    elif valasztas == 3:
+        b=int(input("Betétel összege: "))
+        penzbetetel(b)
+        
+    elif valasztas == 4:
+        m=int(input("Előzmény mérete (db) Minden: [0]: "))
+        tortenet(m)
+        
+    elif valasztas == 9:
+        mentes(adatfajl)
+        exit()
+
 
     
