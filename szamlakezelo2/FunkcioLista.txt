@@ -1,0 +1,41 @@
+[x] Adattároló fájl: szamla3.csv
+    Szerkezet/mezők:
+        Dátum
+        Kategória: Fizetés, Ajándék, Utazás, Vásárlás, Szórakozás
+        Összeg
+        Megjegyzés
+        
+    Példa: 2026.09.01,Fizetés,+400000,Havi bér
+
+-----------------------------------------------------------
+
+[x] Belépés PIN kóddal
+[x] Funkcióválasztó menü
+
+-----------------------------------------------------------
+
+Fő funkciók:
+    [x] Egyenleg lekérdezés
+    [x] Pénz kivétel
+    [] Pénz betét
+
+Egyéb funkciók:
+    [] Átlagos kiadás
+    [] Legnagyobb kiadás
+
+    [] Tranzakció történet
+    [] Szűrés kategória alapján
+    [] Havi összesítő
+    [] Időszakos összesítő
+    
+    [] Tranzakció törlése
+    [] Tranzakció módosítása
+
+
+[] Kilépés
+    [] Mentés
+
+
+
+
+

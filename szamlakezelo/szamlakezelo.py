@@ -1,3 +1,6 @@
+import subprocess
+from colorama import Fore, Back, Style
+
 # GLOBÁLIS VÁLTOZÓK
 
 
@@ -37,7 +40,7 @@ def egyenleg():
     for sz in tranzakciok:
         szamla_egyenleg += int(sz)
         
-    print(f"Az egyenleged: {szamla_egyenleg} Ft")
+    print(f"\nAz egyenleged: {szamla_egyenleg} Ft")
 
 
 def utalas(osszeg):
@@ -45,10 +48,10 @@ def utalas(osszeg):
     
     osszeg += round(hasznalati_dij * 0.05)
     
-    if osszeg>egyenleg():
-        print("Nem áll rendelkezésre elegendő fedezet!")
+    if osszeg > egyenleg():
+        print("\nNem áll rendelkezésre elegendő fedezet!")
     else:
-        tranzakciok.append(f"-{osszeg}")
+    tranzakciok.append(f"-{osszeg}")Gmmmmmmmmmmmmmmmmmmm
 
     egyenleg()
 
@@ -91,7 +94,7 @@ pk = int(input("Add meg a PIN kódodat!: "))
 
 if pk == pin_kod:
     jogosult = True
-    print("Sikeres belépés!")
+    print(f"{Fore.GREEN} Sikeres belépés!")
 
 while (not jogosult and hibas_belepesszam > 1):
     print (f"Hibás PIN kód!")
@@ -100,10 +103,12 @@ while (not jogosult and hibas_belepesszam > 1):
     
     if pk == pin_kod:
         jogosult = True
-        print("Sikeres belépés!")
+        print(f"{Fore.GREEN} Sikeres belépés!")
 
 if not jogosult:
-    print(f"Hibás pin kód!")
+    print(f"{Fore.RED} Hibás pin kód!")
+
+print(f"{Fore.RESET}", end="")
 
 adatbeolvasas(adatfajl)
 
@@ -124,12 +129,21 @@ menu=[
 
 menupontok=[1, 2, 3, 4, 9]
 
+
 while True:
+    
+    print(f"{Back.LIGHTCYAN_EX}{cim:30}")
+    print(f"{Back.RESET}", end="")
+
+    print(f"{Fore.LIGHTCYAN_EX}",end="")
+    
     print(cim)
     for me in menu:
         print(f"{me}")
 
     valasztas=int(input("Válassz tevékenységet: "))
+    
+    print(f"{Style.RESET_ALL}",end="")
 
     while valasztas not in menupontok:
         print("Nincs ilyen menüpont!\n")
@@ -142,7 +156,7 @@ while True:
     #KÉPERNYŐ TÖRLÉSE
     
     
-    print(f"{'\n'*20}")
+    # print(f"{'\n'*20}")
     
 
     if valasztas == 1:
@@ -161,8 +175,8 @@ while True:
         tortenet(m)
         
     elif valasztas == 9:
-        mentes(adatfajl)
+        # mentes(adatfajl)
         exit()
 
-
-    
+    input(f"Üss egy billenytűt a folytatáshoz...")
+    subprocess.run(["cls"], shell=True)
